@@ -12,8 +12,8 @@ using MovieManager.DAL.Data;
 namespace MovieManager.DAL.Migrations
 {
     [DbContext(typeof(MovieDbContext))]
-    [Migration("20260705211305_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260714190853_InitialCreate_CompleteSchema")]
+    partial class InitialCreate_CompleteSchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,11 @@ namespace MovieManager.DAL.Migrations
 
             modelBuilder.Entity("MovieManager.DAL.Entities.Actor", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Biography")
                         .HasColumnType("nvarchar(max)");
@@ -52,23 +52,23 @@ namespace MovieManager.DAL.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Actors");
                 });
 
             modelBuilder.Entity("MovieManager.DAL.Entities.Director", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Biography")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateOnly?>("BrithDate")
+                    b.Property<DateOnly?>("BirthDate")
                         .HasColumnType("date");
 
                     b.Property<string>("Country")
@@ -84,18 +84,18 @@ namespace MovieManager.DAL.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Directors");
                 });
 
             modelBuilder.Entity("MovieManager.DAL.Entities.Genre", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -105,18 +105,18 @@ namespace MovieManager.DAL.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("MovieManager.DAL.Entities.Movie", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AgeRating")
                         .HasColumnType("nvarchar(max)");
@@ -162,7 +162,7 @@ namespace MovieManager.DAL.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("DirectorId");
 
@@ -197,11 +197,11 @@ namespace MovieManager.DAL.Migrations
 
             modelBuilder.Entity("MovieManager.DAL.Entities.Review", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
@@ -220,7 +220,7 @@ namespace MovieManager.DAL.Migrations
                     b.Property<int>("Score")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("MovieId");
 
