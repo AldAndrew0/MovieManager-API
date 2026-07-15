@@ -51,7 +51,7 @@ namespace MovieManager.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Actors");
+                    b.ToTable("Actors", (string)null);
                 });
 
             modelBuilder.Entity("MovieManager.DAL.Entities.Director", b =>
@@ -83,7 +83,7 @@ namespace MovieManager.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Directors");
+                    b.ToTable("Directors", (string)null);
                 });
 
             modelBuilder.Entity("MovieManager.DAL.Entities.Genre", b =>
@@ -104,7 +104,7 @@ namespace MovieManager.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
                 });
 
             modelBuilder.Entity("MovieManager.DAL.Entities.Movie", b =>
@@ -165,7 +165,7 @@ namespace MovieManager.DAL.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", (string)null);
                 });
 
             modelBuilder.Entity("MovieManager.DAL.Entities.MovieActor", b =>
@@ -189,7 +189,7 @@ namespace MovieManager.DAL.Migrations
 
                     b.HasIndex("ActorId");
 
-                    b.ToTable("MovieActors");
+                    b.ToTable("MovieActors", (string)null);
                 });
 
             modelBuilder.Entity("MovieManager.DAL.Entities.Review", b =>
@@ -221,7 +221,7 @@ namespace MovieManager.DAL.Migrations
 
                     b.HasIndex("MovieId");
 
-                    b.ToTable("Reviews", t =>
+                    b.ToTable("Reviews", null, t =>
                         {
                             t.HasCheckConstraint("CK_Review_Score", "Score >= 1 AND Score <= 10");
                         });
