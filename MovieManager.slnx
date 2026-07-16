@@ -2,6 +2,10 @@
   <Folder Name="/Solution Items/">
     <File Path=".gitattributes" />
     <File Path=".gitignore" />
+    <File Path="Guida-BBL-Completa-3.0.md" />
+    <File Path="Guida-Controller-Scalar-4.0.md" />
+    <File Path="Guida-Entity-Completa-1.0.md" />
+    <File Path="Guida-Repository-UnitOfWork-2.0.md" />
     <File Path="README.md" />
   </Folder>
   <Project Path="MovieManager.BLL/MovieManager.BLL.csproj" />

@@ -14,6 +14,7 @@ using MovieManager.DAL.Entities;
 using MovieManager.DAL.Repositories;
 using MovieManager.DAL.Repositories.Interfaces;
 using MovieManager.PL.API.Configurations;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("MovieDbString")
@@ -42,6 +43,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 app.UseHttpsRedirection();
 app.UseAuthorization();
