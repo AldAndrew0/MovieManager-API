@@ -27,9 +27,9 @@ namespace MovieManager.PL.API.Controllers
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ActorModel>> GetById(int id)
+        public async Task<ActionResult<ActorModel>> GetById(int id, CancellationToken cancellationToken)
         {
-            var actor = await _actorService.GetByIdAsync(id);
+            var actor = await _actorService.GetByIdAsync(id, cancellationToken);
             if (actor == null) return NotFound($"Attore con ID {id} non trovato.");
             return Ok(actor);
         }
@@ -37,10 +37,10 @@ namespace MovieManager.PL.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ActorModel>> Create([FromBody] ActorModel model)
+        public async Task<ActionResult<ActorModel>> Create([FromBody] ActorModel model, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            var created = await _actorService.CreateAsync(model);
+            var created = await _actorService.CreateAsync(model, cancellationToken);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
@@ -48,10 +48,10 @@ namespace MovieManager.PL.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update(int id, [FromBody] ActorModel model)
+        public async Task<IActionResult> Update(int id, [FromBody] ActorModel model, CancellationToken cancellationToken)
         {
             if (id != model.Id) return BadRequest("L'ID non corrisponde.");
-            var success = await _actorService.UpdateAsync(model);
+            var success = await _actorService.UpdateAsync(model, cancellationToken);
             if (!success) return NotFound($"Attore con ID {id} non trovato.");
             return NoContent();
         }
@@ -59,9 +59,9 @@ namespace MovieManager.PL.API.Controllers
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
-            var success = await _actorService.DeleteAsync(id);
+            var success = await _actorService.DeleteAsync(id, cancellationToken);
             if (!success) return NotFound($"Attore con ID {id} non trovato.");
             return NoContent();
         }

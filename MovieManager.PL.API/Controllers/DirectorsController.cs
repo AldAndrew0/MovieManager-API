@@ -27,9 +27,9 @@ namespace MovieManager.PL.API.Controllers
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<DirectorModel>> GetById(int id)
+        public async Task<ActionResult<DirectorModel>> GetById(int id, CancellationToken cancellationToken)
         {
-            var director = await _directorService.GetByIdAsync(id);
+            var director = await _directorService.GetByIdAsync(id, cancellationToken);
             if (director == null) return NotFound($"Regista con ID {id} non trovato.");
             return Ok(director);
         }
@@ -37,10 +37,10 @@ namespace MovieManager.PL.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<DirectorModel>> Create([FromBody] DirectorModel model)
+        public async Task<ActionResult<DirectorModel>> Create([FromBody] DirectorModel model, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            var created = await _directorService.CreateAsync(model);
+            var created = await _directorService.CreateAsync(model, cancellationToken);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
@@ -48,10 +48,10 @@ namespace MovieManager.PL.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update(int id, [FromBody] DirectorModel model)
+        public async Task<IActionResult> Update(int id, [FromBody] DirectorModel model, CancellationToken cancellationToken)
         {
             if (id != model.Id) return BadRequest("L'ID non corrisponde.");
-            var success = await _directorService.UpdateAsync(model);
+            var success = await _directorService.UpdateAsync(model, cancellationToken);
             if (!success) return NotFound($"Regista con ID {id} non trovato.");
             return NoContent();
         }
@@ -59,9 +59,9 @@ namespace MovieManager.PL.API.Controllers
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
-            var success = await _directorService.DeleteAsync(id);
+            var success = await _directorService.DeleteAsync(id, cancellationToken);
             if (!success) return NotFound($"Regista con ID {id} non trovato.");
             return NoContent();
         }

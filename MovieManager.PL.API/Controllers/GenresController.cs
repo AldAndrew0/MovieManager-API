@@ -33,9 +33,9 @@ namespace MovieManager.PL.API.Controllers
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<GenreModel>> GetById(int id)
+        public async Task<ActionResult<GenreModel>> GetById(int id, CancellationToken cancellationToken)
         {
-            var genre = await _genreService.GetByIdAsync(id);
+            var genre = await _genreService.GetByIdAsync(id, cancellationToken);
 
             if (genre == null)
             {
@@ -48,14 +48,14 @@ namespace MovieManager.PL.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<GenreModel>> Create([FromBody] GenreModel model)
+        public async Task<ActionResult<GenreModel>> Create([FromBody] GenreModel model, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var createdGenre = await _genreService.CreateAsync(model);
+            var createdGenre = await _genreService.CreateAsync(model, cancellationToken);
 
             return CreatedAtAction(nameof(GetById), new { id = createdGenre.Id }, createdGenre);
         }
@@ -64,14 +64,14 @@ namespace MovieManager.PL.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update(int id, [FromBody] GenreModel model)
+        public async Task<IActionResult> Update(int id, [FromBody] GenreModel model, CancellationToken cancellationToken)
         {
             if (id != model.Id)
             {
                 return BadRequest("L'ID nell'URL non corrisponde all'ID nel corpo della richiesta.");
             }
 
-            var success = await _genreService.UpdateAsync(model);
+            var success = await _genreService.UpdateAsync(model, cancellationToken);
 
             if (!success)
             {
@@ -84,9 +84,9 @@ namespace MovieManager.PL.API.Controllers
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
-            var success = await _genreService.DeleteAsync(id);
+            var success = await _genreService.DeleteAsync(id, cancellationToken);
 
             if (!success)
             {
