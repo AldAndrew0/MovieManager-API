@@ -12,6 +12,7 @@ namespace MovieManager.PL.API.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class GenresController : ControllerBase
     {
         private readonly IGenericService<GenreModel> _genreService;
@@ -22,13 +23,16 @@ namespace MovieManager.PL.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<GenreModel>>> GetAll()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IReadOnlyList<GenreModel>>> GetAll(CancellationToken cancellationToken)
         {
-            var genres = await _genreService.GetAllAsync();
+            var genres = await _genreService.GetAllAsync(cancellationToken);
             return Ok(genres); 
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<GenreModel>> GetById(int id)
         {
             var genre = await _genreService.GetByIdAsync(id);
@@ -42,6 +46,8 @@ namespace MovieManager.PL.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<GenreModel>> Create([FromBody] GenreModel model)
         {
             if (!ModelState.IsValid)
@@ -54,7 +60,10 @@ namespace MovieManager.PL.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = createdGenre.Id }, createdGenre);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update(int id, [FromBody] GenreModel model)
         {
             if (id != model.Id)
@@ -72,7 +81,9 @@ namespace MovieManager.PL.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
             var success = await _genreService.DeleteAsync(id);

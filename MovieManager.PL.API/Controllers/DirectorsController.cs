@@ -6,6 +6,7 @@ namespace MovieManager.PL.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class DirectorsController : ControllerBase
     {
         private readonly IGenericService<DirectorModel> _directorService;
@@ -16,12 +17,16 @@ namespace MovieManager.PL.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<DirectorModel>>> GetAll()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IReadOnlyList<DirectorModel>>> GetAll(CancellationToken cancellationToken)
         {
-            return Ok(await _directorService.GetAllAsync());
+            var directors = await _directorService.GetAllAsync(cancellationToken);
+            return Ok(directors);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<DirectorModel>> GetById(int id)
         {
             var director = await _directorService.GetByIdAsync(id);
@@ -30,6 +35,8 @@ namespace MovieManager.PL.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<DirectorModel>> Create([FromBody] DirectorModel model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -37,7 +44,10 @@ namespace MovieManager.PL.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update(int id, [FromBody] DirectorModel model)
         {
             if (id != model.Id) return BadRequest("L'ID non corrisponde.");
@@ -46,7 +56,9 @@ namespace MovieManager.PL.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
             var success = await _directorService.DeleteAsync(id);

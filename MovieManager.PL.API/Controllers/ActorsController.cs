@@ -6,6 +6,7 @@ namespace MovieManager.PL.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class ActorsController : ControllerBase
     {
         private readonly IGenericService<ActorModel> _actorService;
@@ -16,12 +17,16 @@ namespace MovieManager.PL.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ActorModel>>> GetAll()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IReadOnlyList<ActorModel>>> GetAll(CancellationToken cancellationToken)
         {
-            return Ok(await _actorService.GetAllAsync());
+            var actors = await _actorService.GetAllAsync(cancellationToken);
+            return Ok(actors);
         }
 
         [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ActorModel>> GetById(int id)
         {
             var actor = await _actorService.GetByIdAsync(id);
@@ -30,6 +35,8 @@ namespace MovieManager.PL.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ActorModel>> Create([FromBody] ActorModel model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -38,6 +45,9 @@ namespace MovieManager.PL.API.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update(int id, [FromBody] ActorModel model)
         {
             if (id != model.Id) return BadRequest("L'ID non corrisponde.");
@@ -47,6 +57,8 @@ namespace MovieManager.PL.API.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
             var success = await _actorService.DeleteAsync(id);
